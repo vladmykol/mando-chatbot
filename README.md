@@ -1,6 +1,6 @@
 # Mando - create free chatbot
 
-[![Build status](https://travis-ci.org/mykovolod/mando-chatbot.svg?branch=master)](https://travis-ci.org/mykovolod/mando-chatbot) 
+[![Build status](https://travis-ci.com/mykovolod/mando-chatbot.svg?branch=master)](https://travis-ci.com/mykovolod/mando-chatbot) 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=com.mykovolod%3Amovieland&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.mykovolod%3Amovieland)
 
 This is free chatbot builder platform powered by SpringBoot and ApacheOpenNLP libs
