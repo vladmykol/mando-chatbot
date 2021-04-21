@@ -1,0 +1,53 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.0'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
+
+group = 'com.mykovolod'
+version = '1.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+bootJar {
+    manifest {
+        attributes('Implementation-Title': project.name, 'Implementation-Version': project.version)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+// string and collection utils
+    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+//NLP
+    compile 'org.apache.opennlp:opennlp-tools:1.9.3'
+//telegram oficial java
+    implementation 'org.telegram:telegrambots:5.0.0'
+
+//testing
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.security:spring-security-test'
+//    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation("org.assertj:assertj-core:3.18.0")
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+test {
+    useJUnitPlatform()
+}
