@@ -1,0 +1,6 @@
+,-----.             ,--.
+|  |) /_   ,---.  ,-'  '-.
+|  .-.  \ | .-. | '-.  .-'
+|  '--' / ' '-' '   |  |
+`------'   `---'    `--'
+${Ansi.RED} :: Mando chatbot ${application.formatted-version} :: ${Ansi.DEFAULT}
