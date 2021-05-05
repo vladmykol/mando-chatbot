@@ -38,3 +38,20 @@ MONGO_URL=mongodb://localhost:27017/yourDataBaseName
 - no unit test coverage
 - overcomplicated Telegram workflow
 
+## Deploy with dokku in DigitalOcean
+
+###initial setup
+1. Create dokku repo  
+   `dokku git:allow-host github.com`
+1. Create personal access token in GitHub account
+1. Add that toke to dokku  
+   `dokku git:auth github.com ?username? ?personal-access-token?`
+
+###deploy steps
+1. Push the latest changes to GitHub
+1. Login to DigitalOcean and use console
+1. Stop app to free up memory for a build, otherwise deploy will fail as container  
+   `dokku ps:stop server`
+1. `dokku git:sync --build server https://github.com/mykovolod/mando-chatbot.git`
+1. Check logs
+   `dokku logs server -t`
