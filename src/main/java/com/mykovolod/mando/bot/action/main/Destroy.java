@@ -45,8 +45,8 @@ public class Destroy implements MainBotAction {
             if (supportBotByOwner != null) {
                 final var reconnectTelegramKeyBoard = new TelegramInlineKeyboard(getName());
                 reconnectTelegramKeyBoard.addButton("Hell no!", "no");
-                reconnectTelegramKeyBoard.addButton("❌  Yes, I'm sure", YES_COMMAND);
-                reconnectTelegramKeyBoard.addButton("Cancel", "no");
+                reconnectTelegramKeyBoard.addRow().addButton("❌  Yes, I'm sure", YES_COMMAND);
+                reconnectTelegramKeyBoard.addRow().addButton("Cancel", "no");
                 final var outMessage = botUpdate.addOutEditMessage("Are you sure you want to delete your bot @" + supportBotByOwner.getBotName() + "?" +
                         "\n\n<i>Bot will be stopped and all settings removed</i>");
                 outMessage.setKeyBoard(reconnectTelegramKeyBoard.getMarkup());

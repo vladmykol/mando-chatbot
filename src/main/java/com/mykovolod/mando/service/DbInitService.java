@@ -5,6 +5,7 @@ import com.mykovolod.mando.conts.BotType;
 import com.mykovolod.mando.conts.LangEnum;
 import com.mykovolod.mando.dto.IntentProperties;
 import com.mykovolod.mando.entity.BotEntity;
+import com.mykovolod.mando.entity.BotStatus;
 import com.mykovolod.mando.entity.IntentData;
 import com.mykovolod.mando.entity.IntentEntity;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class DbInitService {
                 .botToken(mainBotKey)
                 .ownerId(mainBotOwnerUserId)
                 .botType(BotType.MAIN)
+                .status(BotStatus.ACTIVE)
                 .build();
 
         botEntityService.saveBot(newBotEntity);

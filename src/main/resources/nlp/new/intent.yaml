@@ -40,7 +40,8 @@ dataPerLang:
   ENG:
     examples:
       - "Hey"
-      - "hi there"
+      - "🇺🇸 Hi there"
+      - "Hi"
       - "hello"
       - "hey dude"
       - "Good evening"
