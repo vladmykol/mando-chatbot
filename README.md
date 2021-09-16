@@ -51,7 +51,7 @@ MONGO_URL=mongodb://localhost:27017/yourDataBaseName
 1. Push the latest changes to GitHub
 1. Login to DigitalOcean and use console
 1. Stop app to free up memory for a build, otherwise deploy will fail as container  
-   `dokku ps:stop server`
-1. `dokku git:sync --build server https://github.com/mykovolod/mando-chatbot.git`
+   `dokku ps:stop bot`
+1. `dokku git:sync --build bot https://github.com/mykovolod/mando-chatbot.git`
 1. Check logs
-   `dokku logs server -t`
+   `dokku logs bot -t`
