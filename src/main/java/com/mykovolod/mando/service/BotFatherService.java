@@ -7,7 +7,9 @@ import com.mykovolod.mando.conts.BotType;
 import com.mykovolod.mando.dto.BotInfo;
 import com.mykovolod.mando.entity.BotEntity;
 import com.mykovolod.mando.entity.BotStatus;
+import com.mykovolod.mando.entity.MessageEntity;
 import com.mykovolod.mando.repository.BotEntityRepository;
+import com.mykovolod.mando.repository.MessageEntityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Lookup;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,7 @@ import java.util.Map;
 public abstract class BotFatherService {
     private final TelegramService telegramService;
     private final BotEntityRepository botEntityRepository;
+    private final MessageEntityRepository messageEntityRepository;
     Map<String, Bot> botMap = new HashMap<>();
     @Value("${telegram.bot.owner.userid}")
     String mainBotOwnerUserId;
@@ -89,6 +93,13 @@ public abstract class BotFatherService {
     public void unFreezeBot(BotEntity botEntity) {
         botEntity.setStatus(BotStatus.ACTIVE);
         startBot(botEntity);
+        var messageEntity = MessageEntity.builder()
+                .createDate(new Date())
+                .inMessage("Bot is unfrozen")
+                .userId(botEntity.getOwnerId())
+                .chatId(botEntity.getOwnerId())
+                .build();
+        messageEntityRepository.save(messageEntity);
         botEntityRepository.save(botEntity);
     }
 
