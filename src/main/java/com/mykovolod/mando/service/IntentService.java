@@ -66,8 +66,10 @@ public class IntentService {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDF7\uD83C\uDDFA Привет");
                     } else if (value == LangEnum.POR) {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDF5\uD83C\uDDF9 Olá");
-                    } else {
+                    } else if (value == LangEnum.ENG) {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDFA\uD83C\uDDF8 Hi there");
+                    } else {
+                        continue;
                     }
                     langButtonIdMap.put(value, connectButtonId);
                 }
