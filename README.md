@@ -40,18 +40,30 @@ MONGO_URL=mongodb://localhost:27017/yourDataBaseName
 
 ## Deploy with dokku in DigitalOcean
 
-###initial setup
-1. Create dokku repo  
-   `dokku git:allow-host github.com`
-1. Create personal access token in GitHub account
-1. Add that toke to dokku  
+### Setup new sever
+1. Create [new server and access it via SSH](https://www.banjocode.com/post/hosting/setup-server-hetzner/)
+1. Install [dokku](https://dokku.com/docs/getting-started/installation/#1-install-dokku) on you newly created server
+1. Run following command to setup new application on dokku
+```
+dokku git:allow-host github.com
+dokku mongo:create bot-db
+dokku apps:create bot
+dokku resource:limit --memory 500 bot
+dokku config:set bot TELEGRAM_BOT_NAME=???
+   TELEGRAM_BOT_KEY=???
+   TELEGRAM_BOT_OWNER_USERID=??? JAVA_OPTS='-Xmx200m'
+dokku mongo:link bot-db bot
+```
+4. `dokku docker-options:add chargebro build,deploy "--cpus='0.7' -m='300m'"` - to not use all resources during deploy
+4. Create personal [access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token) in GitHub account
+4. Add that toke to dokku  
    `dokku git:auth github.com ?username? ?personal-access-token?`
-
-###deploy steps
+   
+###Deploy steps
 1. Push the latest changes to GitHub
-1. Login to DigitalOcean and use console
-1. Stop app to free up memory for a build, otherwise deploy will fail as container  
-   `dokku ps:stop bot`
-1. `dokku git:sync --build bot https://github.com/mykovolod/mando-chatbot.git`
-1. Check logs
+1. Login with SSH to your server and run
+```
+dokku git:sync --build bot https://github.com/mykovolod/mando-chatbot.git
+```
+3. Check logs
    `dokku logs bot -t`
