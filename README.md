@@ -49,18 +49,19 @@ dokku git:allow-host github.com
 dokku mongo:create bot-db
 dokku apps:create bot
 dokku resource:limit --memory 500 bot
+dokku checks:disable bot
 dokku config:set bot TELEGRAM_BOT_NAME=???
    TELEGRAM_BOT_KEY=???
    TELEGRAM_BOT_OWNER_USERID=??? JAVA_OPTS='-Xmx200m'
 dokku mongo:link bot-db bot
 ```
-4. `dokku docker-options:add chargebro build,deploy "--cpus='0.7' -m='300m'"` - to not use all resources during deploy
 4. Create personal [access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token) in GitHub account
 4. Add that toke to dokku  
    `dokku git:auth github.com ?username? ?personal-access-token?`
    
 ###Deploy steps
 1. Push the latest changes to GitHub
+1. Stop app to free up memory for a build, otherwise deploy will fail if you have less than 2GB RAM `dokku ps:stop bot`
 1. Login with SSH to your server and run
 ```
 dokku git:sync --build bot https://github.com/mykovolod/mando-chatbot.git
