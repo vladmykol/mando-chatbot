@@ -65,8 +65,9 @@ public abstract class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        log.info("Got bot update: {}", update);
         BotUpdate botUpdate = saveAndBuildBotUpdate(update);
-        log.info("Generating bot update {}", botUpdate);
+        log.info("Saved bot update {}", botUpdate);
         if (botUpdate != null) {
             if (botUpdate.isCommand()) {
                 botService.removePendingCommand(botUpdate.getChat());
