@@ -40,7 +40,7 @@ MONGO_URL=mongodb://localhost:27017/yourDataBaseName
 
 ## Deploy with dokku in DigitalOcean
 
-### Setup new sever
+### Setup new server
 1. Create [new server and access it via SSH](https://www.banjocode.com/post/hosting/setup-server-hetzner/)
 1. Install [dokku](https://dokku.com/docs/getting-started/installation/#1-install-dokku) on you newly created server
 1. Run following command to setup new application on dokku

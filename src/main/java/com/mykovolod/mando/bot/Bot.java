@@ -66,6 +66,7 @@ public abstract class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         BotUpdate botUpdate = saveAndBuildBotUpdate(update);
+        log.info("Generating bot update {}", botUpdate);
         if (botUpdate != null) {
             if (botUpdate.isCommand()) {
                 botService.removePendingCommand(botUpdate.getChat());
@@ -101,6 +102,7 @@ public abstract class Bot extends TelegramLongPollingBot {
 
         botUpdate.getOutMessages().forEach(message -> {
             try {
+                log.info("Sending message to {}", botUpdate.getBotId());
                 execute(message.get());
             } catch (TelegramApiException e) {
                 log.error("Cannot reply to telegram message {}", botUpdate.getInMessage(), e);
