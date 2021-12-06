@@ -45,7 +45,7 @@ public class BotUpdate {
             final var editMessageText = new EditMessageText();
             editMessageText.setText(messageText);
             editMessageText.setMessageId(callbackMessageId);
-            editMessageText.setChatId(Long.valueOf(telegramChatId));
+            editMessageText.setChatId(telegramChatId);
 
             outMessage.setEditMessageText(editMessageText);
         } else {

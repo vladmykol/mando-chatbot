@@ -35,7 +35,7 @@ dependencies {
 //NLP
     compile 'org.apache.opennlp:opennlp-tools:1.9.3'
 //telegram oficial java
-    implementation 'org.telegram:telegrambots:5.0.0'
+    implementation 'org.telegram:telegrambots:5.4.0.1'
 
 //testing
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
