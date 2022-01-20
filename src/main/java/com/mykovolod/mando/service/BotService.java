@@ -123,14 +123,14 @@ public class BotService {
             stringBuilder.append("unknown");
         });
 
-        stringBuilder.append("\r\n\uD83D\uDCAC User: ").append(messageEntity.getInMessage());
+        stringBuilder.append("\r\n\uD83D\uDCAC ").append(messageEntity.getInMessage());
         if (messageEntity.getOutIntentResponse() != null) {
-            stringBuilder.append("\r\n\uD83E\uDD16 Bot: ").append(StringUtils.abbreviate(messageEntity.getOutIntentResponse(), 200));
+            stringBuilder.append("\r\n------\uD83E\uDD16 Bot------\r\n").append(StringUtils.abbreviate(messageEntity.getOutIntentResponse(), 200));
         }
 
 
         if (isIncludeDebugInfo) {
-            stringBuilder.append("\r\n\r\n------details-------");
+            stringBuilder.append("------details-------");
             if (messageEntity.getCreateDate() != null) {
                 stringBuilder
                         .append("\r\nTime since: ").append(TimeUtils.timeSince(messageEntity.getCreateDate().toInstant()));
@@ -283,9 +283,9 @@ public class BotService {
         botUpdate.addOutMessage(commandMsg);
     }
 
-    public void resendLastBotMessages(BotUpdate botUpdate, List<MessageEntity> chatMessages, String botName) {
+    public void resendLastBotMessages(BotUpdate botUpdate, List<MessageEntity> chatMessages, String botName, String suffix) {
         if (chatMessages != null && !chatMessages.isEmpty()) {
-            final SendDocument sendDocument = getSendDocumentWithMessages(botName, chatMessages);
+            final SendDocument sendDocument = getSendDocumentWithMessages(botName + suffix, chatMessages);
 
             botUpdate.addOutDocument(sendDocument);
         } else {

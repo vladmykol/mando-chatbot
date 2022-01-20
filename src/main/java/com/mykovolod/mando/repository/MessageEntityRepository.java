@@ -18,5 +18,7 @@ public interface MessageEntityRepository extends MongoRepository<MessageEntity, 
 
     List<MessageEntity> findByChatIdInAndOutIntentResponseIsNotNull(List<String> chatIds, Pageable pageable);
 
+    List<MessageEntity> findByChatIdInAndOutIntentResponseIsNotNullOrderByCreateDateDesc(List<String> chatIds);
+
    void deleteAllByChatIdIn(List<String> chatIds);
 }
