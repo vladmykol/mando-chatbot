@@ -180,7 +180,7 @@ public class SmartBotSession implements BotSession {
                 try {
                     httpclient.close();
                 } catch (IOException e) {
-                    log.warn(e.getLocalizedMessage(), e);
+                    log.debug(e.getLocalizedMessage(), e);
                 }
             }
             super.interrupt();
@@ -260,7 +260,7 @@ public class SmartBotSession implements BotSession {
                 String responseContent = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
 
                 if (response.getStatusLine().getStatusCode() >= 500) {
-                    log.warn(responseContent);
+                    log.debug(responseContent);
                     synchronized (lock) {
                         lock.wait(500);
                     }
