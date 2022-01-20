@@ -7,7 +7,6 @@ import com.mykovolod.mando.entity.*;
 import com.mykovolod.mando.service.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
@@ -172,7 +171,7 @@ public class Intents implements MainBotAction {
                     botId = botUpdate.getSecondCommandParam();
                     var intentName = botUpdate.getThirdCommandParam();
 
-                    if (Strings.isBlank(intentName)) {
+                    if (StringUtils.isEmpty(intentName)) {
                         chatService.removePendingCommand(botUpdate.getChat());
                         break;
                     } else {

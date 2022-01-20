@@ -13,7 +13,7 @@ public class TimeUtils {
     }
 
     public static String timeBetween(Instant start, Instant end) {
-        return DurationFormatUtils.formatDurationHMS(Duration.between(start, end).toMillis());
+        return DurationFormatUtils.formatDurationWords(Duration.between(start, end).toMillis(),true,true);
     }
 
 }

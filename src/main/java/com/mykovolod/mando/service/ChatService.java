@@ -91,14 +91,23 @@ public class ChatService {
         return chatList.stream().map(Chat::getId).collect(Collectors.toList());
     }
 
-    public List<MessageEntity> getLastBotMessages(String botId) {
+    public List<MessageEntity> getLastBotMessages(String botId, int pageSize) {
         final var chatList = chatRepository.findByBotId(botId);
 
         final var chatIds = chatList.stream()
                 .map(Chat::getId)
                 .collect(Collectors.toList());
-        Pageable pageable = PageRequest.of(0, 60, Sort.by(Sort.Direction.DESC, "createDate"));
+        Pageable pageable = PageRequest.of(0, pageSize, Sort.by(Sort.Direction.DESC, "createDate"));
         return messageEntityRepository.findByChatIdInAndOutIntentResponseIsNotNull(chatIds, pageable);
+    }
+
+    public List<MessageEntity> getLastAllBotMessages(String botId) {
+        final var chatList = chatRepository.findByBotId(botId);
+
+        final var chatIds = chatList.stream()
+                .map(Chat::getId)
+                .collect(Collectors.toList());
+        return messageEntityRepository.findByChatIdInAndOutIntentResponseIsNotNullOrderByCreateDateDesc(chatIds);
     }
 
     public void deleteAllByBot(String botId) {
