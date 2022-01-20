@@ -125,7 +125,7 @@ public class BotService {
 
         stringBuilder.append("\r\n\uD83D\uDCAC ").append(messageEntity.getInMessage());
         if (messageEntity.getOutIntentResponse() != null) {
-            stringBuilder.append("\r\n------\uD83E\uDD16 Bot------\r\n").append(StringUtils.abbreviate(messageEntity.getOutIntentResponse(), 200));
+            stringBuilder.append("\r\n------\uD83E\uDD16 Bot------\r\n").append(StringUtils.abbreviate(messageEntity.getOutIntentResponse(), "...\r\n", 200));
         }
 
 
