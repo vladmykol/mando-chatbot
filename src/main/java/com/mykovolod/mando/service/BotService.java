@@ -69,11 +69,8 @@ public class BotService {
     public String getChatIdWithBotOwner(String botId) {
         final var optionalBotEntity = findBotById(botId);
 
-        if (optionalBotEntity.isPresent()) {
-            return optionalBotEntity.get().getOwnerId(); //chatid and ownerid is the same for chat with one member
-        } else {
-            return null;
-        }
+        //chatid and ownerid is the same for chat with one member
+        return optionalBotEntity.map(BotEntity::getOwnerId).orElse(null);
     }
 
     public void resendChatToBotOwner(BotUpdate botUpdate) {
@@ -82,7 +79,7 @@ public class BotService {
 
         if (targetTelegramChatId != null) {
             final var chatMessages = messageEntityRepository.findAllByChatId(chatIdToResend);
-            final SendDocument sendDocument = getSendDocumentWithMessages("chat_history", chatMessages);
+            final SendDocument sendDocument = getSendDocumentWithMessages("chat_history", chatMessages, false);
 
             var optionalUser = userRepository.findById(botUpdate.getUser().getId());
             String userName;
@@ -98,11 +95,11 @@ public class BotService {
         }
     }
 
-    private SendDocument getSendDocumentWithMessages(String docName, List<MessageEntity> chatMessages) {
+    private SendDocument getSendDocumentWithMessages(String docName, List<MessageEntity> chatMessages, boolean isIncludeDebugInfo) {
         final var stringBuilder = new StringBuilder();
 
         chatMessages.forEach(messageEntity -> {
-            constructMessage(stringBuilder, messageEntity, true);
+            constructMessage(stringBuilder, messageEntity, isIncludeDebugInfo);
             stringBuilder.append("\r\n-------end---------\r\n\r\n\r\n");
         });
 
@@ -285,7 +282,7 @@ public class BotService {
 
     public void resendLastBotMessages(BotUpdate botUpdate, List<MessageEntity> chatMessages, String botName, String suffix) {
         if (chatMessages != null && !chatMessages.isEmpty()) {
-            final SendDocument sendDocument = getSendDocumentWithMessages(botName + suffix, chatMessages);
+            final SendDocument sendDocument = getSendDocumentWithMessages(botName + suffix, chatMessages, true);
 
             botUpdate.addOutDocument(sendDocument);
         } else {
@@ -313,4 +310,19 @@ public class BotService {
         Date maxDaysBefore = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis(15));
         return messageEntityRepository.existsByChatIdInAndCreateDateGreaterThan(chatIds, maxDaysBefore);
     }
+
+    public boolean isConnectOperatorFeatureInUse(String chatId) {
+        var lastMessages = messageEntityRepository.findFirst2ByChatIdOrderByCreateDateDesc(chatId);
+        var maxTimeSinceLastMessage = new Date(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(4));
+        return maxTimeSinceLastMessage.before(lastMessages.get(1).getCreateDate());
+    }
+
+    public void disconnectOperator(String chatId) {
+        chatService.resetChat(chatId);
+    }
+
+    public boolean isButton(String message, String botId) {
+        return intentService.getResponseButton(message, botId).isPresent();
+    }
+
 }

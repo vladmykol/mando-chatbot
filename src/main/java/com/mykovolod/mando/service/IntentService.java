@@ -7,6 +7,7 @@ import com.mykovolod.mando.dto.Intent;
 import com.mykovolod.mando.entity.BotEntity;
 import com.mykovolod.mando.entity.IntentData;
 import com.mykovolod.mando.entity.IntentEntity;
+import com.mykovolod.mando.entity.ResponseButton;
 import com.mykovolod.mando.repository.BotEntityRepository;
 import com.mykovolod.mando.repository.IntentDataRepository;
 import com.mykovolod.mando.repository.IntentRepository;
@@ -208,8 +209,12 @@ public class IntentService {
         return intents;
     }
 
+    public Optional<ResponseButton> getResponseButton(String message, String botId) {
+        return responseButtonsService.getButtonByNameAndBotId(message, botId);
+    }
+
     private Intent detectIntentBySentence(String sentence, BotUpdate botUpdate, LangEnum detectedLang, Map<LangEnum, DocumentCategorizerME> categorizers) {
-        final var optionalResponseButton = responseButtonsService.getButtonByNameAndBotId(sentence, botUpdate.getBotId());
+        final var optionalResponseButton = getResponseButton(sentence, botUpdate.getBotId());
 
         Intent intent = null;
         if (optionalResponseButton.isPresent()) {
