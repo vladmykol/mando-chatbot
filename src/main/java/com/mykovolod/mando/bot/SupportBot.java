@@ -32,8 +32,15 @@ public class SupportBot extends Bot {
     @Override
     protected void processTextMessage(BotUpdate botUpdate) {
         final var messageEntity = botService.getSavedMessage(botUpdate.getMessageId());
-        if (botUpdate.getChat().getIsOperatorConnected() != null && botUpdate.getChat().getIsOperatorConnected()) {
-            botService.resendMessageToBotOwner(messageEntity, botUpdate.getBotId());
+        if (botService.isButton(messageEntity.getInMessage(), botUpdate.getBotId())) {
+            intentBasedResponse(botUpdate, messageEntity);
+        } else if (botUpdate.getChat().getIsOperatorConnected() != null && botUpdate.getChat().getIsOperatorConnected()) {
+            if (botService.isConnectOperatorFeatureInUse(botUpdate.getChat().getId())) {
+                botService.resendMessageToBotOwner(messageEntity, botUpdate.getBotId());
+            } else {
+                botService.disconnectOperator(botUpdate.getChat().getId());
+                intentBasedResponse(botUpdate, messageEntity);
+            }
         } else {
             intentBasedResponse(botUpdate, messageEntity);
         }

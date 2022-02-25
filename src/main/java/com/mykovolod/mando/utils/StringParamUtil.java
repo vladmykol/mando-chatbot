@@ -71,7 +71,7 @@ public class StringParamUtil {
 
     public static String extractStartParam(String str) {
         final var startParamIndex = str.indexOf(START_COMMAND_WITH_SEPARATOR);
-        if (startParamIndex > -1) {
+        if (startParamIndex == 0) { //only when message start with this command
             return str.substring(startParamIndex + START_COMMAND_WITH_SEPARATOR.length());
         } else {
             return null;
