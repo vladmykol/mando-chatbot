@@ -9,5 +9,5 @@ public class BotConst {
     public final static String NEW_BOT = "new";
     public final static String MAIN_BOT_ID = "admin";
 
-    public static final String DONATE_URL = "https://www.paypal.com/donate?hosted_button_id=XFCNL26P5SFBA";
+    public static final String DONATE_URL = "https://www.buymeacoffee.com/vladmykol";
 }
