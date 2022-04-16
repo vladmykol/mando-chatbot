@@ -8,8 +8,7 @@ public enum LangEnum {
     UKR,
     FRA,
     RUS,
-    POR,
-    OTHER;
+    POR;
 
     public static LangEnum valueOf2LetterLang(String lang) {
         if (lang == null) return LangEnum.ENG;

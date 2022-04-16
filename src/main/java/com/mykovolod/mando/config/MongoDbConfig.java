@@ -70,22 +70,22 @@ public class MongoDbConfig {
         };
     }
 
-    @Bean
-    CommandLineRunner tempFill(UserRepository userRepository, MessageEntityRepository messageEntityRepository) {
-        return args -> {
-            userRepository.findAll().forEach(entity -> {
-                if (entity.getLang() == LangEnum.OTHER) {
-                    entity.setPreferredLang(LangEnum.ENG);
-                    entity.setAccountLang(LangEnum.ENG);
-                    userRepository.save(entity);
-                }
-            });
-            messageEntityRepository.findAll().forEach(entity -> {
-                if (entity.getDetectedLang() == LangEnum.OTHER) {
-                    entity.setDetectedLang(LangEnum.ENG);
-                    messageEntityRepository.save(entity);
-                }
-            });
-        };
-    }
+//    @Bean
+//    CommandLineRunner tempFill(UserRepository userRepository, MessageEntityRepository messageEntityRepository) {
+//        return args -> {
+//            userRepository.findAll().forEach(entity -> {
+//                if (entity.getLang() == LangEnum.OTHER) {
+//                    entity.setPreferredLang(LangEnum.ENG);
+//                    entity.setAccountLang(LangEnum.ENG);
+//                    userRepository.save(entity);
+//                }
+//            });
+//            messageEntityRepository.findAll().forEach(entity -> {
+//                if (entity.getDetectedLang() == LangEnum.OTHER) {
+//                    entity.setDetectedLang(LangEnum.ENG);
+//                    messageEntityRepository.save(entity);
+//                }
+//            });
+//        };
+//    }
 }
