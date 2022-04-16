@@ -60,6 +60,7 @@ public class BotEntityService {
 
     public BotEntity findSupportBotByOwner(String ownerUserId) {
         BotEntity botEntity = null;
+        log.info("Find support bot by owner id =" + ownerUserId + " and remoteHelpWithBotId = " + remoteHelpWithBotId);
         if (ownerUserId.equals(mainBotOwnerUserId) && remoteHelpWithBotId != null) {
             botEntity = botEntityRepository.findByIdAndBotType(remoteHelpWithBotId, BotType.SUPPORT);
         }

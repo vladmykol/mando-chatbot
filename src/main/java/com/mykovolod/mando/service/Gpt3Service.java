@@ -61,6 +61,6 @@ public class Gpt3Service {
             }
             return prev;
         });
-        return Gpt3UsePerBot.get(botId).getUseTimes().get() <= 2;
+        return Gpt3UsePerBot.get(botId).getUseTimes().get() <= 31;
     }
 }

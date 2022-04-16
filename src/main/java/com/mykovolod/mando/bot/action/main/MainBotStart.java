@@ -36,10 +36,10 @@ public class MainBotStart implements MainBotAction {
                     .setKeyBoard(keyBoardWithSelectLang(lang));
         } else {
             final var message = langBundleService.getMessage("bot.main.desc", botUpdate.getUser().getLang());
-            botEntityService.setTempRemoteHelpWithBot(null);
             botUpdate.addOutMessage(message)
                     .setKeyBoard(keyBoardWithSelectLang(botUpdate.getUser().getLang()));
         }
+        botEntityService.setTempRemoteHelpWithBot(null);
     }
 
     private InlineKeyboardMarkup keyBoardWithSelectLang(LangEnum currentLang) {

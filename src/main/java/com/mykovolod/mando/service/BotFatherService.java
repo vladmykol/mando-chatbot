@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,7 +39,8 @@ public abstract class BotFatherService {
     public void initBots() {
         final var allBots = botEntityRepository.findByStatus(BotStatus.ACTIVE);
         startBots(allBots);
-        notifyMainBotOwner("Mando was started. Total existing bots: " + allBots.size());
+        var botNamesAndOwners = allBots.stream().map(botEntity -> "\n-@" + botEntity.getBotName() + " " + botEntity.getOwnerId()).collect(Collectors.joining());
+        notifyMainBotOwner("Mando was started. Existing bots(" + allBots.size() + "): " + allBots.size() + botNamesAndOwners);
     }
 
     public void sendMessageByMainBot(String chatId, String text) {
