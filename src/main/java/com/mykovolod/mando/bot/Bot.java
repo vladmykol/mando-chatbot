@@ -81,7 +81,9 @@ public abstract class Bot extends TelegramLongPollingBot {
             }
 
             saveUpdateResponse(botUpdate);
-            respondWith(botUpdate);
+            if (botUpdate.hasOutMessages()) {
+                respondWith(botUpdate);
+            }
         }
     }
 

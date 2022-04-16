@@ -140,4 +140,9 @@ public class BotUpdate {
     public boolean hasPendingCommand() {
         return chat.getPendingCommand() != null && !chat.getPendingCommand().isEmpty();
     }
+
+    public boolean hasOutMessages() {
+        return outMessages.stream().map(inMessage -> inMessage.getText().trim())
+                .noneMatch(String::isEmpty);
+    }
 }

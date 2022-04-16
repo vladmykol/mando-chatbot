@@ -59,7 +59,7 @@ public class BotService {
         var responseIntents = intentService.detectIntent(botUpdate, detectedLang, categorizers);
 
         //try to make a bot more smart with GPT3
-        if (botUpdate.getBotInfo().isUseGpt3() && isBotAlreadyRespondedWithSameMassageRecently(botUpdate.getBotId(), botUpdate.getUser().getId(), responseIntents)) {
+        if (!isEmptyIntent(responseIntents) && botUpdate.getBotInfo().isUseGpt3() && isBotAlreadyRespondedWithSameMassageRecently(botUpdate.getBotId(), botUpdate.getUser().getId(), responseIntents)) {
             if (gpt3Service.isNotRateLimited(botUpdate.getBotId())) {
                 responseIntents = getResponseFromGpt3(botUpdate.getInMessage(), responseIntents, detectedLang);
             } else {
@@ -86,6 +86,12 @@ public class BotService {
             log.error("Error from GPT3", e);
         }
         return responseIntents;
+    }
+
+    private boolean isEmptyIntent(Intent[] responseIntents) {
+        return Arrays.stream(responseIntents)
+                .map(intent -> intent.getResponse().trim())
+                .allMatch(String::isEmpty);
     }
 
     private boolean isBotAlreadyRespondedWithSameMassageRecently(String botId, String userId, Intent[] responseIntents) {
