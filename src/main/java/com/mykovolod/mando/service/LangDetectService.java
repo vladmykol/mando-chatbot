@@ -35,7 +35,7 @@ public class LangDetectService {
     public LangEnum detect(String string) {
         final var languages = detectAllLang(string);
 
-        for (int i = 0; i < languages.length && i <= 3; i++) {
+        for (int i = 0; i < languages.length && i <= 20; i++) {
             final var langEnum = LangEnum.getEnum(languages[i].getLang());
             if (langEnum != null) {
                 return langEnum;
