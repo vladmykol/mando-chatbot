@@ -264,8 +264,6 @@ public class Intents implements MainBotAction {
 
                     optionalIntentData.ifPresent(intentData -> {
                         optionalIntent.ifPresent(intentEntity -> {
-                            final var oldSampleList = intentData.getSamples();
-
                             intentService.updateIntentSamples(intentData, newSampleList);
 
                             try {
@@ -273,11 +271,7 @@ public class Intents implements MainBotAction {
 
                                 showIntentUpdateView(botUpdate, intentEntity, intentData);
                             } catch (Exception e) {
-                                intentService.updateIntentSamples(intentData, oldSampleList);
-
-                                var intentIsUpdatedMsg = langBundleService.getMessage("bot.main.intent.updated.error",
-                                        new Object[]{intentEntity.getName(), intentData.getLang(), e.getMessage()}
-                                        , botUpdate.getUser().getLang());
+                                String intentIsUpdatedMsg = extractErrorAfterBotTraining(botUpdate, intentData.getLang().toString(), intentEntity, e);
 
                                 final InlineKeyboardMarkup updateOptionsButton = constructIntentUpdateOptionsKeyboard(botUpdate, intentData, intentEntity);
 
@@ -406,7 +400,7 @@ public class Intents implements MainBotAction {
 
                                     resultMsg = intentText + " " + intent.getName() + " " + wasDeletedText;
                                 } catch (Exception e) {
-                                    resultMsg = e.getMessage();
+                                    resultMsg = extractErrorAfterBotTraining(botUpdate, "empty", intent, e);
                                 }
 
                                 botUpdate
@@ -1008,6 +1002,19 @@ public class Intents implements MainBotAction {
                 botUpdate.addOutMessage(newBotText);
             }
         }
+    }
+
+    private String extractErrorAfterBotTraining(BotUpdate botUpdate, String landError, IntentEntity intentEntity, Exception e) {
+        var intentIsUpdatedMsg = "";
+        if (e.getMessage().startsWith("Training data must contain more than one outcome")) {
+            intentIsUpdatedMsg = langBundleService.getMessage("bot.main.intent.updated.warn"
+                    , botUpdate.getUser().getLang());
+        } else {
+            intentIsUpdatedMsg = langBundleService.getMessage("bot.main.intent.updated.error",
+                    new Object[]{intentEntity.getName(), landError, e.getMessage()}
+                    , botUpdate.getUser().getLang());
+        }
+        return intentIsUpdatedMsg;
     }
 
     private void showIntentUpdateView(BotUpdate botUpdate, IntentEntity intentEntity, IntentData intentData) {
