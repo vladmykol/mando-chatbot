@@ -68,16 +68,4 @@ public class MongoDbConfig {
             }
         };
     }
-
-    @Bean
-    CommandLineRunner tempFill(BotEntityRepository botEntityRepository) {
-        return args -> {
-            botEntityRepository.findAll().forEach(botEntity -> {
-                if (botEntity.getSupportedLang() != null && botEntity.getSupportedLang().contains(LangEnum.OTHER) ) {
-                    botEntity.getSupportedLang().remove(LangEnum.OTHER);
-                    botEntityRepository.save(botEntity);
-                }
-            });
-        };
-    }
 }

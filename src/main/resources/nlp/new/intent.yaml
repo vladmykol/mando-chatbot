@@ -25,14 +25,11 @@ dataPerLang:
   ENG:
     responses:
       - "Not sure I understand \nYou can ask me differently or connect operator to help"
-      - "I am here to answer some common question. Looks like I am not recognizing yours \nYou can ask me differently or connect operator to help"
   RUS:
     responses:
-      - "Я тут чтобы отвечать на роспостранноние вопросы. Не уверен, что понимаю ваше сообщения \nВы можете спросить меня иначе или подключить оператора"
       - "Не уверен, что могу ответить. \nВы можете спросить меня иначе или подключить оператора"
   UKR:
     responses:
-      - "Не впевнений, що я розумію ваше повідомлення \nВи можете запитати мене інакше або підключити оператора"
       - "Не впевнений, що можу відповісти \nВи можете запитати мене інакше або підключити оператора"
 ---
 intentName: "hi"
