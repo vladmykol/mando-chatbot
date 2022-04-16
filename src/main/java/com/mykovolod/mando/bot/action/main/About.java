@@ -26,9 +26,6 @@ public class About implements MainBotAction {
         sendMessage.disableWebPagePreview();
         sendMessage.setHtmlMode();
 
-        final var keyboard = new TelegramInlineKeyboard().addUrlButton("Donate", BotConst.DONATE_URL);
-        sendMessage.setKeyBoard(keyboard.getMarkup());
-
         botUpdate.addSendPhoto("bot_logic.jpg", "static" + File.separator + "bot_logic.jpg");
     }
 }

@@ -59,7 +59,6 @@ public class SupportBot extends Bot {
                 botService.resendMessageToBotOwner(messageEntity, botUpdate.getBotId());
             }
 
-
             final var response = lastIntent.getResponse();
             if (response == null) {
                 lastOutMessage = botUpdate.addOutMessage("Response is not set for Intent - " + lastIntent.getName());

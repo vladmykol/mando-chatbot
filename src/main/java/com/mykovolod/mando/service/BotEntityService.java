@@ -25,7 +25,7 @@ public class BotEntityService {
     private final BotEntityRepository botEntityRepository;
     private final BotFatherService botFatherService;
     private final IntentService intentService;
-    private final LangBundleService langBundleService;
+    private final Gpt3Service gpt3Service;
     @Value("${telegram.bot.owner.userid}")
     String mainBotOwnerUserId;
     private String remoteHelpWithBotId;
@@ -64,7 +64,7 @@ public class BotEntityService {
             botEntity = botEntityRepository.findByIdAndBotType(remoteHelpWithBotId, BotType.SUPPORT);
         }
 
-        if (botEntity==null) {
+        if (botEntity == null) {
             return botEntityRepository.findByOwnerIdAndBotType(ownerUserId, BotType.SUPPORT);
         } else {
             return botEntity;
@@ -96,6 +96,8 @@ public class BotEntityService {
                     .status(BotStatus.ACTIVE)
                     .supportedLang(defaultLangEnumSet)
                     .botType(BotType.SUPPORT)
+                    .debugMode(false)
+                    .useGpt3(true)
                     .build();
             final var botEntity = botEntityRepository.save(newBotEntity);
             intentService.copyDefaultSettingForNewBot(botEntity.getId());
@@ -116,6 +118,24 @@ public class BotEntityService {
         botFatherService.setBotDebugMode(botId, debugMode);
 
         return debugMode;
+    }
+
+    public Boolean setUseGpt3(String botId) {
+        final var optionalBotEntity = findBotById(botId);
+        boolean useGpt3 = false;
+        if (optionalBotEntity.isPresent()) {
+            if (gpt3Service.isNotRateLimited(botId)) {
+                useGpt3 = optionalBotEntity.get().getUseGpt3();
+                useGpt3 = !useGpt3;
+                optionalBotEntity.get().setUseGpt3(useGpt3);
+                botEntityRepository.save(optionalBotEntity.get());
+                botFatherService.setUseGpt3(botId, useGpt3);
+            } else {
+                return null;
+            }
+        }
+
+        return useGpt3;
     }
 
     public List<BotEntity> findAllBotsExceptMain() {

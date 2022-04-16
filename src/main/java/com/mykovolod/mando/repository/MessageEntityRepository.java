@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface MessageEntityRepository extends MongoRepository<MessageEntity, String> {
     List<MessageEntity> findAllByChatId(String chatId);
@@ -21,7 +20,9 @@ public interface MessageEntityRepository extends MongoRepository<MessageEntity, 
 
     List<MessageEntity> findByChatIdInAndOutIntentResponseIsNotNull(List<String> chatIds, Pageable pageable);
 
+    List<MessageEntity> findByChatIdInAndUserIdAndOutIntentResponseIsNotNull(List<String> chatIds, String userId, Pageable pageable);
+
     List<MessageEntity> findByChatIdInAndOutIntentResponseIsNotNullOrderByCreateDateDesc(List<String> chatIds);
 
-   void deleteAllByChatIdIn(List<String> chatIds);
+    void deleteAllByChatIdIn(List<String> chatIds);
 }

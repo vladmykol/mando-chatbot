@@ -31,6 +31,8 @@ TELEGRAM_BOT_KEY=yourBotApiKey
 TELEGRAM_BOT_OWNER_USERID=yourTelegramChatId
 # db
 MONGO_URL=mongodb://localhost:27017/yourDataBaseName
+# openAI
+GPT3_TOKEN=youApiKey
 ~~~~
 
 ## Current issues
@@ -55,6 +57,7 @@ dokku checks:disable bot
 dokku config:set bot TELEGRAM_BOT_NAME=???
    TELEGRAM_BOT_KEY=???
    TELEGRAM_BOT_OWNER_USERID=??? JAVA_OPTS='-Xmx200m'
+   GPT3_TOKEN=???
 dokku mongo:link bot-db bot
 ```
 
@@ -74,8 +77,8 @@ dokku mongo:link bot-db bot
 dokku git:sync --build bot https://github.com/mykovolod/mando-chatbot.git
 ```
 
-3. Check logs
-   `dokku logs bot -t`
+3. Check logs for errors
+   `dokku logs bot -n 999999999999999999 | grep -i "error"`
 
 ### Announce new bot feature
 Just change following message property with new announcement message

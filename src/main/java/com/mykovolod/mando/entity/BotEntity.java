@@ -42,6 +42,8 @@ public class BotEntity {
 
     private Set<LangEnum> supportedLang;
 
+    private Boolean useGpt3;
+
     @CreatedDate
     private Date createDate;
 

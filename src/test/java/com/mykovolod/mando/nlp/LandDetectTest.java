@@ -19,29 +19,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LandDetectTest {
     @Autowired
     LangDetectService langDetectService;
-    Set<LangEnum> supportedLang = Set.of(LangEnum.values());
 
     @Test
     void exactLangUkrStart() {
-        final var languages = langDetectService.detect(supportedLang, "Привіт");
+        final var languages = langDetectService.detect("Привіт");
         assertThat(languages).isEqualTo(LangEnum.UKR);
     }
 
     @Test
     void exactLangRusStart() {
-        final var languages = langDetectService.detect(supportedLang, "Привет");
+        final var languages = langDetectService.detect("Привет");
         assertThat(languages).isEqualTo(LangEnum.RUS);
     }
 
     @Test
     void exactLangUkr() {
-        final var languages = langDetectService.detect(supportedLang, "Привіт, як справи?");
+        final var languages = langDetectService.detect("Привіт, як справи?");
         assertThat(languages).isEqualTo(LangEnum.UKR);
     }
 
     @Test
     void exactLangRus() {
-        final var languages = langDetectService.detect(supportedLang, "Привет. Как дела?");
+        final var languages = langDetectService.detect("Привет. Как дела?");
         assertThat(languages).isEqualTo(LangEnum.RUS);
     }
 

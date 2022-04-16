@@ -1,5 +1,6 @@
 package com.mykovolod.mando.service;
 
+import com.mykovolod.mando.conts.LangEnum;
 import com.mykovolod.mando.entity.Chat;
 import com.mykovolod.mando.entity.MessageEntity;
 import com.mykovolod.mando.repository.ChatRepository;
@@ -31,7 +32,7 @@ public class ChatService {
             final var newChat = Chat.builder()
                     .botId(botId)
                     .telegramChatId(telegramChatId)
-                    .whatsNewMsg(langBundleService.getMessage("bot.main.whats_new"))
+                    .whatsNewMsg(langBundleService.getMessage("bot.main.whats_new", LangEnum.ENG))
                     .build();
             return chatRepository.save(newChat);
         } else {
@@ -91,12 +92,15 @@ public class ChatService {
         return chatList.stream().map(Chat::getId).collect(Collectors.toList());
     }
 
-    public List<MessageEntity> getLastBotMessages(String botId, int pageSize) {
-        final var chatList = chatRepository.findByBotId(botId);
+    public List<MessageEntity> getLastBotMessagesForUser(String botId, String userId, int pageSize) {
+        final var chatIds = getBotChatIds(botId);
 
-        final var chatIds = chatList.stream()
-                .map(Chat::getId)
-                .collect(Collectors.toList());
+        Pageable pageable = PageRequest.of(0, pageSize, Sort.by(Sort.Direction.DESC, "createDate"));
+        return messageEntityRepository.findByChatIdInAndUserIdAndOutIntentResponseIsNotNull(chatIds, userId, pageable);
+    }
+
+    public List<MessageEntity> getLastBotMessages(String botId, int pageSize) {
+        final var chatIds = getBotChatIds(botId);
         Pageable pageable = PageRequest.of(0, pageSize, Sort.by(Sort.Direction.DESC, "createDate"));
         return messageEntityRepository.findByChatIdInAndOutIntentResponseIsNotNull(chatIds, pageable);
     }

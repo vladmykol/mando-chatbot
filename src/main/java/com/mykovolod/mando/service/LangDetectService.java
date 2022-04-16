@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,20 +24,6 @@ public class LangDetectService {
     @PostConstruct
     public void init() throws IOException {
         log.debug("Init lang detection service");
-//        InputStreamFactory dataIn
-//                = new MarkableFileInputStreamFactory(
-//                new File("src/main/resources/nlp/LangSample.txt"));
-//        ObjectStream<String> lineStream = new PlainTextByLineStream(dataIn, "UTF-8");
-//        LanguageDetectorSampleStream sampleStream
-//                = new LanguageDetectorSampleStream(lineStream);
-//        TrainingParameters params = new TrainingParameters();
-//        params.put(TrainingParameters.ITERATIONS_PARAM, 100);
-//        params.put(TrainingParameters.CUTOFF_PARAM, 5);
-//        params.put("DataIndexer", "TwoPass");
-//        params.put(TrainingParameters.ALGORITHM_PARAM, "NAIVEBAYES");
-//
-//        LanguageDetectorModel model = LanguageDetectorME
-//                .train(sampleStream, params, new LanguageDetectorFactory());
 
         final var classPathResource = new ClassPathResource("nlp" + File.separator + "langdetect-183.bin");
         // Load serialized trained model
@@ -47,12 +32,12 @@ public class LangDetectService {
         langDetect = new LanguageDetectorME(model);
     }
 
-    public LangEnum detect(Set<LangEnum> supportedLang, String string) {
+    public LangEnum detect(String string) {
         final var languages = detectAllLang(string);
 
         for (Language language : languages) {
             final var langEnum = LangEnum.getEnum(language.getLang());
-            if (langEnum != null && supportedLang.contains(langEnum)) {
+            if (langEnum != null) {
                 return langEnum;
             }
         }
