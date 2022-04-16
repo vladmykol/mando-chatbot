@@ -30,7 +30,7 @@ public class Destroy implements MainBotAction {
                 final var supportBotByOwner = botEntityService.findSupportBotByOwner(botUpdate.getUser().getId());
                 if (supportBotByOwner != null) {
                     botService.deleteBot(supportBotByOwner.getId());
-                    botUpdate.addOutEditMessage("Your bot is deleted \uD83D\uDE35" +
+                    botUpdate.addOutEditMessage("Your bot " + supportBotByOwner.getBotName() + " is deleted \uD83D\uDE35" +
                             "\n\nPress /start to return to beginning");
                 } else {
                     botUpdate.addOutEditMessage("Bot is not found");

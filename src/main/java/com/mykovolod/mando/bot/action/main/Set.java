@@ -98,7 +98,10 @@ public class Set implements MainBotAction {
                     break;
 
                 case BOT_NAME:
-                    final var botNameFromUser = botUpdate.getSecondCommandParam();
+                    var botNameFromUser = botUpdate.getSecondCommandParam();
+                    if (botNameFromUser.startsWith("@")) {
+                        botNameFromUser = botNameFromUser.substring(1);
+                    }
                     if (!Pattern.matches("^[^@\\s+][\\S]{3,}(?i)(bot)$", botNameFromUser)) {
                         final var invalidBotName = langBundleService.getMessage("bot.main.set.name.invalid"
                                 , botUpdate.getUser().getLang());

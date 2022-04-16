@@ -39,8 +39,8 @@ public abstract class BotFatherService {
     public void initBots() {
         final var allBots = botEntityRepository.findByStatus(BotStatus.ACTIVE);
         startBots(allBots);
-        var botNamesAndOwners = allBots.stream().map(botEntity -> "\n-@" + botEntity.getBotName() + " " + botEntity.getOwnerId()).collect(Collectors.joining());
-        notifyMainBotOwner("Mando was started. Existing bots(" + allBots.size() + "): " + allBots.size() + botNamesAndOwners);
+        var botNamesAndOwners = allBots.stream().map(botEntity -> "\n- @" + botEntity.getBotName()).collect(Collectors.joining());
+        notifyMainBotOwner("Mando was started. Existing bots(" + allBots.size() + "): " + botNamesAndOwners);
     }
 
     public void sendMessageByMainBot(String chatId, String text) {
