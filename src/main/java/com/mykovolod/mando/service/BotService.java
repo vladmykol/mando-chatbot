@@ -306,12 +306,6 @@ public class BotService {
         chatService.deleteAllByBot(botId);
         intentService.deleteAllByBot(botId);
         botEntityRepository.deleteById(botId);
-
-//        try {
-//            resendSimpleMessageToBotOwner("Your bot was deleted", botId);
-//        } catch (TelegramApiException apiException) {
-//            log.error("Cannot 'delete bot notification' message to bot owner", apiException);
-//        }
     }
 
     public void addNotFoundCommandMsg(BotUpdate botUpdate) {
