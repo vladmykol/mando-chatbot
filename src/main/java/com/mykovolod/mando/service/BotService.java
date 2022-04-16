@@ -317,7 +317,7 @@ public class BotService {
     public void addNotFoundCommandMsg(BotUpdate botUpdate) {
         if (botUpdate.getBotInfo().getOwnerId().equals(botUpdate.getUser().getId())) {
             botUpdate.addOutMessage(langBundleService.getMessage("text.command.not_found.use_main_bot"
-                    , botUpdate.getUser().getLang()));
+                    , botUpdate.getUser().getLang())).setHtmlMode();
         } else {
             botUpdate.addOutMessage(langBundleService.getMessage("text.command.not_found"
                     , botUpdate.getUser().getLang()));
