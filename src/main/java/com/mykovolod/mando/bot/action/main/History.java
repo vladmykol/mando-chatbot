@@ -5,9 +5,11 @@ import com.mykovolod.mando.entity.BotEntity;
 import com.mykovolod.mando.entity.BotStatus;
 import com.mykovolod.mando.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class History implements MainBotAction {
     private final BotEntityService botEntityService;
@@ -28,7 +30,10 @@ public class History implements MainBotAction {
         var loadFullButtonText = langBundleService.getMessage("bot.main.intent.history.yes.full"
                 , botUpdate.getUser().getLang());
 
+        log.info("requesting history ");
+
         final var optionalBotEntity = botEntityService.findBotById(botUpdate.getBotId());
+        log.info("requesting history for bot " + optionalBotEntity.get());
         optionalBotEntity.ifPresent(thisBotEntity -> {
             if (botUpdate.hasCommandParams()) {
                 final var firstCommandParam = botUpdate.getFirstCommandParam();
@@ -47,7 +52,7 @@ public class History implements MainBotAction {
                         final var botByOwner = botEntityService.findSupportBotByOwner(botUpdate.getUser().getId());
                         if (botByOwner != null) {
                             final var lastBotMessages = chatService.getLastAllBotMessages(botByOwner.getId());
-                            botService.resendLastBotMessages(botUpdate, lastBotMessages, botByOwner.getBotName(),"_all");
+                            botService.resendLastBotMessages(botUpdate, lastBotMessages, botByOwner.getBotName(), "_all");
                         }
                     }
                 } else {
@@ -58,19 +63,20 @@ public class History implements MainBotAction {
                 }
 
             } else {
-
+                log.info("requesting history responseText");
                 var responseText = langBundleService.getMessage("bot.main.questions.recent"
                         , botUpdate.getUser().getLang());
 
                 if (thisBotEntity.getOwnerId().equals(botUpdate.getUser().getId())) {
                     final var allBots = botEntityService.findAllByOrderByStatus();
                     botUpdate.addOutMessage(responseText);
+                    log.info("requesting history for all bots");
 
                     final var pageSize = 60;
                     for (BotEntity botEntity : allBots) {
                         if (botEntity.getStatus().equals(BotStatus.ACTIVE)) {
                             final var lastBotMessages = chatService.getLastBotMessages(botEntity.getId(), pageSize);
-                            botService.resendLastBotMessages(botUpdate, lastBotMessages, botEntity.getBotName(),"");
+                            botService.resendLastBotMessages(botUpdate, lastBotMessages, botEntity.getBotName(), "");
                         }
                     }
 
@@ -83,10 +89,11 @@ public class History implements MainBotAction {
                 } else {
                     final var botByOwner = botEntityService.findSupportBotByOwner(botUpdate.getUser().getId());
                     if (botByOwner != null) {
+                        log.info("requesting history for one bot "+ botByOwner.getBotName());
                         botUpdate.addOutMessage(responseText);
                         final var pageSize = 60;
                         final var lastBotMessages = chatService.getLastBotMessages(botByOwner.getId(), pageSize);
-                        botService.resendLastBotMessages(botUpdate, lastBotMessages, botByOwner.getBotName(),"");
+                        botService.resendLastBotMessages(botUpdate, lastBotMessages, botByOwner.getBotName(), "");
                         if (lastBotMessages.size() == pageSize) {
                             var loadMoreKeyboard = new TelegramInlineKeyboard(getName())
                                     .addButton(loadFullButtonText, LOAD_FULL);
