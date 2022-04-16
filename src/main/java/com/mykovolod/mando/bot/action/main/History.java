@@ -30,10 +30,7 @@ public class History implements MainBotAction {
         var loadFullButtonText = langBundleService.getMessage("bot.main.intent.history.yes.full"
                 , botUpdate.getUser().getLang());
 
-        log.info("requesting history ");
-
         final var optionalBotEntity = botEntityService.findBotById(botUpdate.getBotId());
-        log.info("requesting history for bot " + optionalBotEntity.get());
         optionalBotEntity.ifPresent(thisBotEntity -> {
             if (botUpdate.hasCommandParams()) {
                 final var firstCommandParam = botUpdate.getFirstCommandParam();
