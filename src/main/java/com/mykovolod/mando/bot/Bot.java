@@ -38,7 +38,7 @@ public abstract class Bot extends TelegramLongPollingBot {
         info.setDebugMode(debugMode);
     }
 
-    public void setUseGpt3(Boolean useGpt3) {
+    public void setUseGpt3(boolean useGpt3) {
         info.setUseGpt3(useGpt3);
     }
 

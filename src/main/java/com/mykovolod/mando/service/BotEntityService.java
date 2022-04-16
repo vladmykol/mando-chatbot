@@ -125,7 +125,7 @@ public class BotEntityService {
         boolean useGpt3 = false;
         if (optionalBotEntity.isPresent()) {
             if (gpt3Service.isNotRateLimited(botId)) {
-                useGpt3 = optionalBotEntity.get().getUseGpt3();
+                useGpt3 = optionalBotEntity.get().isUseGpt3();
                 useGpt3 = !useGpt3;
                 optionalBotEntity.get().setUseGpt3(useGpt3);
                 botEntityRepository.save(optionalBotEntity.get());

@@ -109,7 +109,7 @@ public abstract class BotFatherService {
         botMap.get(botId).setDebugMode(debugMode);
     }
 
-    public void setUseGpt3(String botId, Boolean useGpt3) {
+    public void setUseGpt3(String botId, boolean useGpt3) {
         botMap.get(botId).setUseGpt3(useGpt3);
     }
 
@@ -132,7 +132,7 @@ public abstract class BotFatherService {
                     botEntity.getBotToken(),
                     botEntity.getOwnerId(),
                     botEntity.isDebugMode(),
-                    botEntity.getUseGpt3()));
+                    botEntity.isUseGpt3()));
             botMap.put(bot.getBotId(), bot);
         } catch (Exception e) {
             initError = "❗️" + e.getMessage();

@@ -66,7 +66,7 @@ public class IntentService {
                     } else if (value == LangEnum.RUS) {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDF7\uD83C\uDDFA Привет");
                     } else if (value == LangEnum.UKR) {
-                        connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDF5\uD83C\uDDF9 Доброго дня");
+                        connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDFA\uD83C\uDDE6 Привіт");
                     } else if (value == LangEnum.ENG) {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDFA\uD83C\uDDF8 Hi there");
                     } else {
