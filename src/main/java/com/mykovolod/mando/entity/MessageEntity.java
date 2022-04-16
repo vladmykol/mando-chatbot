@@ -36,7 +36,6 @@ public class MessageEntity {
 
     private boolean intentDetermined;
 
-    @Indexed
     private String userId;
 
     @CreatedDate

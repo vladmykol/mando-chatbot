@@ -15,8 +15,9 @@ dataPerLang:
   ENG:
     responses:
       - "Hi human. I am your smart Chatbot.\nThis is default welcome message which you can change in @create_free_chatbot Mando bot
-         \n\nПривет, человек. Я твой умный чат-бот.\nЭто приветственное сообщение по умолчанию, которое можно изменить в @create_free_chatbot Мандо боте
+         \n\nПривіт, людина. Я твій розумний чат-бот.\nЦе привітальне повідомлення за умовчанням, яке можна змінити в @create_free_chatbot
          \n\nSalut humain. Je suis votre chatbot intelligent.\nCeci est le message de bienvenue par défaut que vous pouvez modifier dans @create_free_chatbot Mando bot
+         \n\nПривет, человек. Я твой умный чат-бот.\nЭто приветственное сообщение по умолчанию, которое можно изменить в @create_free_chatbot Мандо боте
          \n\n🚀🚀🚀"
 ---
 intentName: "*default"

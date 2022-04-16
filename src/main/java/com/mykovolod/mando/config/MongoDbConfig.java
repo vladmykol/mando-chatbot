@@ -2,7 +2,6 @@ package com.mykovolod.mando.config;
 
 import com.mykovolod.mando.conts.RoleEnum;
 import com.mykovolod.mando.entity.Role;
-import com.mykovolod.mando.repository.BotEntityRepository;
 import com.mykovolod.mando.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,18 +64,6 @@ public class MongoDbConfig {
                     roleRepository.save(newRole);
                 }
             }
-        };
-    }
-
-    @Bean
-    CommandLineRunner tempFill(BotEntityRepository botEntityRepository) {
-        return args -> {
-            botEntityRepository.findAll().forEach(botEntity -> {
-               if (botEntity.getUseGpt3() == null) {
-                   botEntity.setUseGpt3(false);
-                   botEntityRepository.save(botEntity);
-               }
-            });
         };
     }
 }

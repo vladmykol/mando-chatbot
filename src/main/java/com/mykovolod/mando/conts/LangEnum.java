@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public enum LangEnum {
-    UKR,
     ENG,
+    UKR,
     FRA,
     RUS,
-    OTHER;
+    POR;
 
     public static LangEnum valueOf2LetterLang(String lang) {
         if (lang == null) return LangEnum.ENG;

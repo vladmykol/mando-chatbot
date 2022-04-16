@@ -42,8 +42,8 @@ public class LangDetectService {
             }
         }
 
-        final var defaultLang = LangEnum.OTHER;
-        log.warn("Not able to detect language so fall back to default {}", defaultLang);
+        final var defaultLang = LangEnum.ENG;
+        log.warn("Not able to detect language for message '{}' so fall back to default {}", string, defaultLang);
         return defaultLang;
     }
 
