@@ -65,8 +65,8 @@ public class IntentService {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDEB\uD83C\uDDF7 Bonjour");
                     } else if (value == LangEnum.RUS) {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDF7\uD83C\uDDFA Привет");
-                    } else if (value == LangEnum.POR) {
-                        connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDF5\uD83C\uDDF9 Olá");
+                    } else if (value == LangEnum.UKR) {
+                        connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDF5\uD83C\uDDF9 Доброго дня");
                     } else if (value == LangEnum.ENG) {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "\uD83C\uDDFA\uD83C\uDDF8 Hi there");
                     } else {
@@ -115,6 +115,8 @@ public class IntentService {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "Підключити оператора");
                     } else if (value == LangEnum.RUS) {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "Подключить оператора");
+                    } else if (value == LangEnum.FRA) {
+                        connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "Connecter l'opérateur");
                     } else {
                         connectButtonId = responseButtonsService.createNewButton(botEntity.getId(), "Connect operator");
                     }
