@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import opennlp.tools.doccat.DocumentCategorizerME;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,12 +27,13 @@ import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -45,16 +47,54 @@ public class BotService {
     private final BotFatherService botFatherService;
     private final MessageEntityRepository messageEntityRepository;
     private final LangBundleService langBundleService;
+    private final Gpt3Service gpt3Service;
+
 
     @Value("${telegram.bot.name}")
     @Getter
     private String mainBotName;
 
     public Intent[] detectIntent(BotUpdate botUpdate, Map<LangEnum, DocumentCategorizerME> categorizers) {
-        final var botById = findBotById(botUpdate.getBotId());
-        final var detectedLang = langDetectService.detect(botById.get().getSupportedLang(), botUpdate.getInMessage());
+        final var detectedLang = langDetectService.detect(botUpdate.getInMessage());
+        var responseIntents = intentService.detectIntent(botUpdate, detectedLang, categorizers);
 
-        return intentService.detectIntent(botUpdate, detectedLang, categorizers);
+        //try to make a bot more smart with GPT3
+        if (botUpdate.getBotInfo().isUseGpt3() && isBotAlreadyRespondedWithSameMassageRecently(botUpdate.getBotId(), botUpdate.getUser().getId(), responseIntents)) {
+            if (gpt3Service.isNotRateLimited(botUpdate.getBotId())) {
+                responseIntents = getResponseFromGpt3(botUpdate.getInMessage(), responseIntents, detectedLang);
+            } else {
+                log.info("Bot {} is rateLimited to use GPT3 today", botUpdate.getBotInfo().getName());
+            }
+        }
+
+        return responseIntents;
+    }
+
+    private Intent[] getResponseFromGpt3(String message, Intent[] responseIntents, LangEnum detectedLang) {
+        var context = langBundleService.getMessage("gpt3.context", detectedLang);
+        var stopWord = langBundleService.getMessage("gpt3.context.stopword", detectedLang);
+        try {
+            var gpt3Response = gpt3Service.getAiResponse(context, stopWord, message);
+            if (gpt3Response != null) {
+                //remove other responses if there are more than 1
+                if (responseIntents.length > 1) {
+                    responseIntents = ArrayUtils.toArray(responseIntents[0]);
+                }
+                responseIntents[0].setResponse(gpt3Response);
+            }
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            log.error("Error from GPT3", e);
+        }
+        return responseIntents;
+    }
+
+    private boolean isBotAlreadyRespondedWithSameMassageRecently(String botId, String userId, Intent[] responseIntents) {
+        Stream<String> lastBotMessages = chatService.getLastBotMessagesForUser(botId, userId, 7).stream()
+                .map(messageEntity -> messageEntity.getOutIntentResponse().trim());
+        List<String> currentBotMessages = Arrays.stream(responseIntents).map(intent -> intent.getResponse().trim())
+                .collect(Collectors.toList());
+
+        return lastBotMessages.anyMatch(currentBotMessages::contains);
     }
 
     public void connectOperatorToChat(BotUpdate botUpdate) {
@@ -275,9 +315,13 @@ public class BotService {
     }
 
     public void addNotFoundCommandMsg(BotUpdate botUpdate) {
-        final var commandMsg = langBundleService.getMessage("text.command.not_found",
-                botUpdate.getUser().getLang());
-        botUpdate.addOutMessage(commandMsg);
+        if (botUpdate.getBotInfo().getOwnerId().equals(botUpdate.getUser().getId())) {
+            botUpdate.addOutMessage(langBundleService.getMessage("text.command.not_found.use_main_bot"
+                    , botUpdate.getUser().getLang()));
+        } else {
+            botUpdate.addOutMessage(langBundleService.getMessage("text.command.not_found"
+                    , botUpdate.getUser().getLang()));
+        }
     }
 
     public void resendLastBotMessages(BotUpdate botUpdate, List<MessageEntity> chatMessages, String botName, String suffix) {

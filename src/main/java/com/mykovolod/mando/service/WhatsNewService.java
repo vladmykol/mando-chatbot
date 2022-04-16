@@ -1,6 +1,7 @@
 package com.mykovolod.mando.service;
 
 import com.mykovolod.mando.conts.BotConst;
+import com.mykovolod.mando.conts.LangEnum;
 import com.mykovolod.mando.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ public class WhatsNewService {
             final var optionalUser = botService.findUserById(chat.getTelegramChatId());
 
             optionalUser.ifPresent(user -> {
-                final var whatsNewMsgVersion = langBundleService.getMessage("bot.main.whats_new");
+                final var whatsNewMsgVersion = langBundleService.getMessage("bot.main.whats_new", LangEnum.ENG);
                 final var whatsNewMsgToSend = langBundleService.getMessage("bot.main.whats_new",
                         user.getLang());
 

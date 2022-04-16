@@ -965,12 +965,14 @@ public class Intents implements MainBotAction {
                 case BACK_TO_START:
                     botByOwner = botEntityService.findSupportBotByOwner(botUpdate.getUser().getId());
                     if (botByOwner != null) {
-                        var whatNextText = langBundleService.getMessage("bot.main.train"
+                        var whatNextText = langBundleService.getMessage("bot.main.train",
+                                botUpdate.getUser().getLang());
+                        var botLink = langBundleService.getMessage("bot.main.bot.link", new Object[]{botByOwner.getBotName()}
                                 , botUpdate.getUser().getLang());
 
                         final var updateIntentOptions = constructUpdateIntentOptions(botUpdate, botByOwner.getId());
                         botUpdate
-                                .addOutEditMessage(whatNextText + "\n@" + botByOwner.getBotName())
+                                .addOutEditMessage(whatNextText + botLink).setHtmlMode()
                                 .setKeyBoard(updateIntentOptions);
                     } else {
                         var newBotText = langBundleService.getMessage("bot.main.dont_have_bot"

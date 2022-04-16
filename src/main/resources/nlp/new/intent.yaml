@@ -111,7 +111,7 @@ dataPerLang:
       - "What functions are you created for?"
       - "What is the meaning of your existence?"
     responses:
-      - "I am a bot and I have all the rules. This is the way!"
+      - "I am just a bot. This is the way!"
       - "Are you a bot too?"
       - "I can answer questions, I can be a support team and much more. You just need to teach me here @create_free_chatbot"
   RUS:
@@ -133,7 +133,7 @@ dataPerLang:
       - "Ты для каких функций создан?"
       - "в чем смысл твоего существования?"
     responses:
-      - "Я бот и у меня всё норм. Таков путь!"
+      - "Я просто бот. Таков путь!"
       - "Вы тоже бот?"
       - "Я могу отвечать на вопросы, могу быть службой поддержки и еще много чего. Нужно только научить меня тут @create_free_chatbot"
   UKR:
@@ -155,6 +155,6 @@ dataPerLang:
       - "Ти для яких функцій створено?"
       - "в чому сенс твого існування?"
     responses:
-      - "Я бот і у мене все норм. Такий шлях!"
+      - "Я просто бот. Такий шлях!"
       - "Ви теж бот?"
       - "Я можу відповідати на питання, можу бути службою підтримки і ще багато чого. Потрібно тільки навчити мене тут @create_free_chatbot"

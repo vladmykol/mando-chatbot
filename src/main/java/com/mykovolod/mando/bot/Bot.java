@@ -38,6 +38,10 @@ public abstract class Bot extends TelegramLongPollingBot {
         info.setDebugMode(debugMode);
     }
 
+    public void setUseGpt3(Boolean useGpt3) {
+        info.setUseGpt3(useGpt3);
+    }
+
     public void initBot(BotInfo botInfo) {
         this.info = botInfo;
         train();
@@ -184,7 +188,7 @@ public abstract class Bot extends TelegramLongPollingBot {
         if (botAction != null) {
             botAction.handle(botUpdate);
         } else {
-            botUpdate.addOutMessage("command not found");
+            botService.addNotFoundCommandMsg(botUpdate);
         }
     }
 

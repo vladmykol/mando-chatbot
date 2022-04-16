@@ -1,6 +1,5 @@
 package com.mykovolod.mando.bot.action.main;
 
-import com.mykovolod.mando.conts.BotConst;
 import com.mykovolod.mando.conts.LangEnum;
 import com.mykovolod.mando.dto.BotUpdate;
 import com.mykovolod.mando.entity.BotEntity;
@@ -27,6 +26,7 @@ public class Set implements MainBotAction {
     public static final String START_BOT_AGAIN = "Start bot again";
     public static final String CHANGE_EXISTING_VIBER_BOT = "Change existing viber";
     public static final String BOT_LANG = "Bot Lang";
+    public static final String AI_ASSIST = "AI Assist";
     private static final String DEBUG_MODE = "Debug mode";
     private final BotFatherService botFatherService;
     private final BotEntityService botEntityService;
@@ -162,30 +162,50 @@ public class Set implements MainBotAction {
                     }
                     break;
 
-                case CHANGE_EXISTING_VIBER_BOT:
-                    final var keyboard = new TelegramInlineKeyboard().addUrlButton("Donate", BotConst.DONATE_URL);
+                case AI_ASSIST:
+                    botId = botUpdate.getSecondCommandParam();
+                    final var isUseGpt3 = botEntityService.setUseGpt3(botId);
+                    String message = "";
+                    String botLink = "";
+                    if (isUseGpt3 == null) {
+                        message = langBundleService.getMessage("bot.main.set.gpt3.limit", botUpdate.getUser().getLang());
+                    } else if (isUseGpt3) {
+                        message = langBundleService.getMessage("bot.main.set.gpt3.enabled", botUpdate.getUser().getLang());
+                        var botByOwner = botEntityService.findSupportBotByOwner(botUpdate.getUser().getId());
+                        if (botByOwner != null) {
+                            botLink = langBundleService.getMessage("bot.main.bot.link",
+                                    new Object[]{botByOwner.getBotName()}, botUpdate.getUser().getLang());
+                        }
+                    } else {
+                        message = langBundleService.getMessage("bot.main.set.gpt3.disabled", botUpdate.getUser().getLang());
+                    }
+                    botUpdate.addOutEditMessage(message + botLink).setHtmlMode();
+                    break;
 
-                    botUpdate.addOutEditMessage("Viber support is great feature that is still to be developed!\n" +
-                            "Please donate to help me finish this feature as soon as possible")
-                            .setKeyBoard(keyboard.getMarkup());
+                case CHANGE_EXISTING_VIBER_BOT:
+                    botUpdate.addOutEditMessage(langBundleService.getMessage("bot.in.viber.not_implemented"
+                            , botUpdate.getUser().getLang()));
                     break;
 
                 case CONTROL_ANOTHER_BOT:
                     final var allBotsExceptMain = botEntityService.findAllBotsExceptMain();
                     final var allBotButtons = new TelegramInlineKeyboard(getName());
 
-                    allBotsExceptMain.forEach(botEnt -> {
-                        allBotButtons.addButton(botEnt.getBotName(), CONTROL_ANOTHER_BOT_ID, botEnt.getId()).addRow();
-                    });
+                    if (botUpdate.getUser().getId().equals(mainBotOwnerUserId)) {
+                        allBotsExceptMain.forEach(botEnt -> {
+                            allBotButtons.addButton(botEnt.getBotName(), CONTROL_ANOTHER_BOT_ID, botEnt.getId()).addRow();
+                        });
 
-
-                    botUpdate.addOutEditMessage("Select bot to control temporally")
-                            .setKeyBoard(allBotButtons.getMarkup());
+                        botUpdate.addOutEditMessage("Select bot to control temporally")
+                                .setKeyBoard(allBotButtons.getMarkup());
+                    }
                     break;
                 case CONTROL_ANOTHER_BOT_ID:
                     botId = botUpdate.getSecondCommandParam();
 
-                    botEntityService.setTempRemoteHelpWithBot(botId);
+                    if (botUpdate.getUser().getId().equals(mainBotOwnerUserId)) {
+                        botEntityService.setTempRemoteHelpWithBot(botId);
+                    }
 
                     botUpdate.addOutEditMessage("Done")
                             .setKeyBoard(new TelegramInlineKeyboard(getName()).addBackButton("back").getMarkup());
@@ -256,6 +276,8 @@ public class Set implements MainBotAction {
                 , user.getLang());
         final var buttonReconnectViber = langBundleService.getMessage("bot.main.set.button.reconnect.viber"
                 , user.getLang());
+        final var aiAssist = langBundleService.getMessage("bot.main.set.button.gpt3.assist"
+                , user.getLang());
         final var buttonLang = langBundleService.getMessage("bot.main.set.button.lang"
                 , user.getLang());
         final var buttonTrain = langBundleService.getMessage("bot.main.set.button.train"
@@ -269,6 +291,8 @@ public class Set implements MainBotAction {
                 .command(getName()).addButton("\uD83D\uDD0C  " + buttonReconnectViber, CHANGE_EXISTING_VIBER_BOT)
                 .addRow()
                 .command(getName()).addButton((botByOwner.isDebugMode() ? "Disable debug mode" : "Enable debug mode"), DEBUG_MODE, botByOwner.getId())
+                .addRow()
+                .command(getName()).addButton("\uD83E\uDDE0  " + aiAssist, AI_ASSIST, botByOwner.getId())
                 .addRow()
                 .command(getName()).addButton("\uD83C\uDFF3  " + buttonLang, BOT_LANG, botByOwner.getId())
                 .addRow()

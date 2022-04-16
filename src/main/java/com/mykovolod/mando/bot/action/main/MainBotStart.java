@@ -2,6 +2,7 @@ package com.mykovolod.mando.bot.action.main;
 
 import com.mykovolod.mando.conts.LangEnum;
 import com.mykovolod.mando.dto.BotUpdate;
+import com.mykovolod.mando.service.BotEntityService;
 import com.mykovolod.mando.service.BotService;
 import com.mykovolod.mando.service.LangBundleService;
 import com.mykovolod.mando.service.TelegramInlineKeyboard;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 public class MainBotStart implements MainBotAction {
     private final LangBundleService langBundleService;
     private final BotService botService;
+    private final BotEntityService botEntityService;
 
     @Override
     public String getName() {
@@ -34,6 +36,7 @@ public class MainBotStart implements MainBotAction {
                     .setKeyBoard(keyBoardWithSelectLang(lang));
         } else {
             final var message = langBundleService.getMessage("bot.main.desc", botUpdate.getUser().getLang());
+            botEntityService.setTempRemoteHelpWithBot(null);
             botUpdate.addOutMessage(message)
                     .setKeyBoard(keyBoardWithSelectLang(botUpdate.getUser().getLang()));
         }

@@ -22,8 +22,4 @@ public class LangBundleService {
     public String getMessage(String messageCode, LangEnum langCode) {
         return getMessage(messageCode, new Object[0], langCode);
     }
-
-    public String getMessage(String messageCode) {
-        return getMessage(messageCode, LangEnum.ENG);
-    }
 }
