@@ -62,17 +62,11 @@ public class BotUpdate {
                 .getClassLoader()
                 .getResourceAsStream(filePath);
 
-//        try (InputStream inputStream = this.getClass()
-//                .getClassLoader()
-//                .getResourceAsStream(filePath)) {
         final var inputFile = new InputFile(inputStream, name);
         final var sendPhoto = new SendPhoto();
         sendPhoto.setPhoto(inputFile);
         sendPhoto.setChatId(telegramChatId);
         outPhoto.add(sendPhoto);
-//        } catch (IOException e) {
-//            addOutMessage("file " + filePath + " is not found");
-//        }
     }
 
     public boolean isCommand() {
