@@ -35,14 +35,14 @@ public class LangDetectService {
     public LangEnum detect(String string) {
         final var languages = detectAllLang(string);
 
-        for (Language language : languages) {
-            final var langEnum = LangEnum.getEnum(language.getLang());
+        for (int i = 0; i < languages.length && i <= 3; i++) {
+            final var langEnum = LangEnum.getEnum(languages[i].getLang());
             if (langEnum != null) {
                 return langEnum;
             }
         }
 
-        final var defaultLang = LangEnum.ENG;
+        final var defaultLang = LangEnum.OTHER;
         log.warn("Not able to detect language so fall back to default {}", defaultLang);
         return defaultLang;
     }

@@ -1,13 +1,14 @@
 package com.mykovolod.mando.conts;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public enum LangEnum {
     UKR,
-    RUS,
     ENG,
     FRA,
-    POR;
+    RUS,
+    OTHER;
 
     public static LangEnum valueOf2LetterLang(String lang) {
         if (lang == null) return LangEnum.ENG;
@@ -25,10 +26,6 @@ public enum LangEnum {
 
     public static LangEnum getEnumOrDefault(String value) {
         final var langEnum = getEnum(value);
-        if (langEnum == null) {
-            return LangEnum.ENG;
-        } else {
-            return langEnum;
-        }
+        return Objects.requireNonNullElse(langEnum, LangEnum.ENG);
     }
 }

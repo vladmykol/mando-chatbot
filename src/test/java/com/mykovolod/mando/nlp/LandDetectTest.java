@@ -39,9 +39,15 @@ class LandDetectTest {
     }
 
     @Test
-    void exactLangRus() {
-        final var languages = langDetectService.detect("Привет. Как дела?");
-        assertThat(languages).isEqualTo(LangEnum.RUS);
+    void exactLangEng() {
+        final var languages = langDetectService.detect("Hi");
+        assertThat(languages).isEqualTo(LangEnum.ENG);
+    }
+
+    @Test
+    void exactLangOther() {
+        final var languages = langDetectService.detect("नमस्ते");
+        assertThat(languages).isEqualTo(LangEnum.OTHER);
     }
 
 }
