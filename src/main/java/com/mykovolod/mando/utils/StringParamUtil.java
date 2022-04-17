@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class StringParamUtil {
     private static final String SEPARATOR = "~";
+    private static final String SEPARATOR_LINK = "@";
     private static final String START_COMMAND_WITH_SEPARATOR = "/start ";
     private static final String COMMAND_SYMBOL = "/";
     private static final String ID_SYMBOL_START = "Id: ";
@@ -35,7 +36,10 @@ public class StringParamUtil {
 
     public static String extractCommandName(String str) {
         if (isCommand(str)) {
-            final var endCommandIndex = str.indexOf(SEPARATOR);
+            var endCommandIndex = str.indexOf(SEPARATOR);
+            if (endCommandIndex < 0) {
+                endCommandIndex = str.indexOf(SEPARATOR_LINK);
+            }
             if (endCommandIndex > 0) {
                 return str.substring(COMMAND_SYMBOL.length(), endCommandIndex);
             } else {
