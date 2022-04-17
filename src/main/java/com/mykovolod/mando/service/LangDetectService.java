@@ -14,6 +14,8 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.SortedSet;
 
 @Service
 @RequiredArgsConstructor
@@ -32,19 +34,19 @@ public class LangDetectService {
         langDetect = new LanguageDetectorME(model);
     }
 
-    public LangEnum detect(String string) {
+    public LangEnum detect(String string, Set<LangEnum> supportedLang, LangEnum userPreferredLang) {
         final var languages = detectAllLang(string);
 
+        //match detected lang with any supported lang
         for (int i = 0; i < languages.length && i <= 20; i++) {
             final var langEnum = LangEnum.getEnum(languages[i].getLang());
-            if (langEnum != null) {
+            if (langEnum != null && supportedLang.contains(langEnum)) {
                 return langEnum;
             }
         }
 
-        final var defaultLang = LangEnum.ENG;
-        log.warn("Not able to detect language for message '{}' so fall back to default {}", string, defaultLang);
-        return defaultLang;
+        log.warn("Not able to detect language for message '{}' from list of supported '{}' so fall back to default user lang {}", string, supportedLang, userPreferredLang);
+        return userPreferredLang;
     }
 
     private Language[] detectAllLang(String string) {

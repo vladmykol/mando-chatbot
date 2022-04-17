@@ -55,7 +55,8 @@ public class BotService {
     private String mainBotName;
 
     public Intent[] detectIntent(BotUpdate botUpdate, Map<LangEnum, DocumentCategorizerME> categorizers) {
-        final var detectedLang = langDetectService.detect(botUpdate.getInMessage());
+        var botEntity = findBotById(botUpdate.getBotId());
+        final var detectedLang = langDetectService.detect(botUpdate.getInMessage(),botEntity.orElseThrow().getSupportedLang(), botUpdate.getUser().getLang());
         var responseIntents = intentService.detectIntent(botUpdate, detectedLang, categorizers);
 
         //try to make a bot more smart with GPT3
