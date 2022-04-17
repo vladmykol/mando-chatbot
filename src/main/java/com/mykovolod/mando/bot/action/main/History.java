@@ -5,11 +5,9 @@ import com.mykovolod.mando.entity.BotEntity;
 import com.mykovolod.mando.entity.BotStatus;
 import com.mykovolod.mando.service.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class History implements MainBotAction {
     private final BotEntityService botEntityService;
@@ -60,14 +58,12 @@ public class History implements MainBotAction {
                 }
 
             } else {
-                log.info("requesting history responseText");
                 var responseText = langBundleService.getMessage("bot.main.questions.recent"
                         , botUpdate.getUser().getLang());
 
                 if (thisBotEntity.getOwnerId().equals(botUpdate.getUser().getId())) {
                     final var allBots = botEntityService.findAllByOrderByStatus();
                     botUpdate.addOutMessage(responseText);
-                    log.info("requesting history for all bots");
 
                     final var pageSize = 60;
                     for (BotEntity botEntity : allBots) {
@@ -86,7 +82,6 @@ public class History implements MainBotAction {
                 } else {
                     final var botByOwner = botEntityService.findSupportBotByOwner(botUpdate.getUser().getId());
                     if (botByOwner != null) {
-                        log.info("requesting history for one bot "+ botByOwner.getBotName());
                         botUpdate.addOutMessage(responseText);
                         final var pageSize = 60;
                         final var lastBotMessages = chatService.getLastBotMessages(botByOwner.getId(), pageSize);
