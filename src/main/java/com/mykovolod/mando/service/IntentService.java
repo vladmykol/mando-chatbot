@@ -224,16 +224,16 @@ public class IntentService {
         } else {
             final var intentByName = intentRepository.findByBotIdAndName(botUpdate.getBotId(), sentence);
             if (intentByName.isPresent()) {
-                var intentDataOptional = intentDataRepository.findByIntentIdAndLang(intentByName.get().getId(), botUpdate.getUser().getLang());
+                var intentDataOptional = intentDataRepository.findByIntentIdAndLang(intentByName.get().getId(), detectedLang);
                 if (intentDataOptional.isPresent()) {
-                    intent = new Intent(intentDataOptional.get().getId(), botUpdate.getUser().getLang());
+                    intent = new Intent(intentDataOptional.get().getId(), detectedLang);
                 } else {
                     final var optionalBotEntity = botEntityRepository.findById(botUpdate.getBotId());
                     if (optionalBotEntity.isPresent()) {
                         for (LangEnum lang : optionalBotEntity.get().getSupportedLang()) {
                             intentDataOptional = intentDataRepository.findByIntentIdAndLang(intentByName.get().getId(), lang);
                             if (intentDataOptional.isPresent()) {
-                                intent = new Intent(intentDataOptional.get().getId(), detectedLang);
+                                intent = new Intent(intentDataOptional.get().getId(), lang);
                                 break;
                             }
                         }

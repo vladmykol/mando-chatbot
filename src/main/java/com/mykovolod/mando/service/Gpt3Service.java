@@ -6,10 +6,13 @@ import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.CompletionResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -41,9 +44,11 @@ public class Gpt3Service {
                 .build();
 
         log.debug("Request to GPT3: {}", completionRequest);
-
+        var startTime = Instant.now();
         CompletionResult completionResult = service.createCompletion("text-davinci-002", completionRequest);
 
+        Duration timeElapsed = Duration.between(startTime, Instant.now());
+        log.info("Response from GPT3 for message <{}> took: {}", message, DurationFormatUtils.formatDurationHMS(timeElapsed.toMillis()));
         log.debug("Response from GPT3: {}", completionResult.getChoices());
 
         return completionResult.getChoices().stream()
