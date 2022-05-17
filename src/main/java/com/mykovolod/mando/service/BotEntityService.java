@@ -62,11 +62,9 @@ public class BotEntityService {
         BotEntity botEntity = null;
         if (ownerUserId.equals(mainBotOwnerUserId) && remoteHelpWithBotId != null) {
             botEntity = botEntityRepository.findByIdAndBotType(remoteHelpWithBotId, BotType.SUPPORT);
-            log.info("dbg: remoteHelpWithBotId="+remoteHelpWithBotId);
         }
 
         if (botEntity == null) {
-            log.info("dbg: ownerUserId="+ownerUserId);
             return botEntityRepository.findByOwnerIdAndBotType(ownerUserId, BotType.SUPPORT);
         } else {
             return botEntity;
