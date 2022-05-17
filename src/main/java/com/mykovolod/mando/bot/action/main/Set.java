@@ -102,6 +102,9 @@ public class Set implements MainBotAction {
                     if (botNameFromUser.startsWith("@")) {
                         botNameFromUser = botNameFromUser.substring(1);
                     }
+                    if (botNameFromUser.contains("/")) {
+                        botNameFromUser = botNameFromUser.substring(botNameFromUser.lastIndexOf("/")+1);
+                    }
                     if (!Pattern.matches("^[^@\\s+][\\S]{3,}(?i)(bot)$", botNameFromUser)) {
                         final var invalidBotName = langBundleService.getMessage("bot.main.set.name.invalid"
                                 , botUpdate.getUser().getLang());

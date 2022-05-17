@@ -13,4 +13,10 @@ class MatchTest {
         assertThat(matches, is(true));
     }
 
+    @Test
+    void botNameAsUrl() {
+        var userInput = "http://t.me/Chatsrest1111111bot";
+        var botName = userInput.substring(userInput.lastIndexOf("/")+1);
+        assertThat(botName, is("Chatsrest1111111bot"));
+    }
 }

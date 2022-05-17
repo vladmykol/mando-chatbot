@@ -5,12 +5,10 @@ import com.mykovolod.mando.service.BotEntityService;
 import com.mykovolod.mando.service.BotService;
 import com.mykovolod.mando.service.LangBundleService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class NewBot implements MainBotAction {
     private final BotEntityService botEntityService;
     private final LangBundleService langBundleService;
@@ -25,9 +23,8 @@ public class NewBot implements MainBotAction {
     public void handle(BotUpdate botUpdate) {
         final var botByOwner = botEntityService.findSupportBotByOwner(botUpdate.getUser().getId());
         if (botByOwner != null) {
-            log.info("dbg: botByOwner="+botByOwner);
             final var botExistsMsg = langBundleService.getMessage("bot.main.newbot.exists",
-                    new Object[]{botUpdate.getBotInfo().getName()},
+                    new Object[]{botByOwner.getBotName()},
                     botUpdate.getUser().getLang());
 
             botUpdate.addOutMessage(botExistsMsg);
