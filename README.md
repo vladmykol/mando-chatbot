@@ -1,12 +1,12 @@
 # Mando - create free chatbot
 
-[![Build status](https://travis-ci.com/mykovolod/mando-chatbot.svg?branch=master)](https://travis-ci.com/mykovolod/mando-chatbot)
+[![Build status](https://travis-ci.com/vladmykol/mando-chatbot.svg?branch=master)](https://travis-ci.com/vladmykol/mando-chatbot)
 
-This is free chatbot builder platform powered by SpringBoot and ApacheOpenNLP libs
+It's a free chatbot builder platform powered by SpringBoot and ApacheOpenNLP libs.
 
 ![Bot Preview](./src/main/resources/static/bot-promo.jpg)
 
-Use Mando chatbot to create and menage your own chatbot using Telegram
+Use Mando chatbot to create and manage your own chatbot using Telegram.
 
 Just try yourself here -> <a href="https://t.me/create_free_chatbot">Open Telegram Bot Mando</a>
 
@@ -22,7 +22,7 @@ Please be sure that the following components are installed on your computer befo
 
 **Custom properties**
 
-You also you need to set the following properties
+You also need to set the following properties.
 
 ~~~~
 # telegram
@@ -40,13 +40,13 @@ GPT3_TOKEN=youApiKey
 - no unit test coverage
 - overcomplicated Telegram workflow
 
-## Deploy with dokku in DigitalOcean
+## Deploy
 
 ### Setup new server
 
 1. Create [new server and access it via SSH](https://www.banjocode.com/post/hosting/setup-server-hetzner/)
-1. Install [dokku](https://dokku.com/docs/getting-started/installation/#1-install-dokku) on you newly created server
-1. Run following command to setup new application on dokku
+1. Install [dokku](https://dokku.com/docs/getting-started/installation/#1-install-dokku) on your newly created server
+1. Run the following command to set up new application on dokku
 
 ```
 dokku git:allow-host github.com
@@ -70,16 +70,16 @@ dokku mongo:link bot-db bot
 ### Deploy steps
 
 1. Push the latest changes to GitHub
-1. Stop app to free up memory for a build, otherwise deploy will fail if you have less than 2GB RAM `dokku ps:stop bot`
+1. Stop app to free up memory for a build otherwise, deploy will fail if you have less than 2GB RAM `dokku ps:stop bot`
 1. Login with SSH to your server and run
 
 ```
-dokku git:sync --build bot https://github.com/mykovolod/mando-chatbot.git
+dokku git:sync --build bot https://github.com/vladmykol/mando-chatbot.git
 ```
 
 3. Check logs for errors
    `dokku logs bot -n 999999999999999999 | grep -i "error"`
 
 ### Announce new bot feature
-Just change following message property with new announcement message
-and it will be sent automatically to all users of bot once after starting. `bot.main.whats_new=`
+Just change the following message property with a new announcement message
+, and it will be sent automatically to all users of bot once after starting. `bot.main.whats_new=`
