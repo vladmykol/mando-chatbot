@@ -2,7 +2,7 @@
 
 [![Build status](https://travis-ci.com/vladmykol/mando-chatbot.svg?branch=master)](https://travis-ci.com/vladmykol/mando-chatbot)
 
-It's a free chatbot builder platform powered by SpringBoot and ApacheOpenNLP libs.
+It's a free chatbot builder platform powered by SpringBoot and ApacheOpenNLP libs. <a href="https://medium.vladmykol.com/my-nlp-chatbot-from-idea-to-500-users-3fadce3335b9">Read more...</a> 
 
 ![Bot Preview](./src/main/resources/static/bot-promo.jpg)
 
