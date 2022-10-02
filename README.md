@@ -84,6 +84,8 @@ dokku git:sync --build bot https://github.com/vladmykol/mando-chatbot.git
 Just change the following message property with a new announcement message
 , and it will be sent automatically to all users of bot once after starting. `bot.main.whats_new=`
 
+
+
 ░░░░░░░░░▄░░░░░░░░░░░░░░▄░░░░   
 ░░░░░░░░▌▒█░░░░░░░░░░░▄▀▒▌░░░   
 ░░░░░░░░▌▒▒█░░░░░░░░▄▀▒▒▒▐░░░     
