@@ -30,7 +30,7 @@ TELEGRAM_BOT_NAME=yourBotName
 TELEGRAM_BOT_KEY=yourBotApiKey
 TELEGRAM_BOT_OWNER_USERID=yourTelegramChatId
 # db
-MONGO_URL=mongodb://localhost:27017/yourDataBaseName
+MONGO_URL=mongodb://localhost:27017/bot-db
 # openAI
 GPT3_TOKEN=youApiKey
 ~~~~
@@ -80,8 +80,9 @@ dokku git:sync --build bot https://github.com/vladmykol/mando-chatbot.git
 3. Check logs for errors
    `dokku logs bot -n 999999999999999999 | grep -i "error"`
 
-### Announce new bot feature
-Just change the following message property with a new announcement message
+## Bot features
+### Announce
+Change the following message property with a new announcement message
 , and it will be sent automatically to all users of bot once after starting. `bot.main.whats_new=`
 
 
