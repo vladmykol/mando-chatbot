@@ -327,10 +327,10 @@ public class SmartBotSession implements BotSession {
                     }
                     callback.onUpdatesReceived(updates);
                 } catch (InterruptedException e) {
-                    log.debug(e.getLocalizedMessage());
+                    log.error("Interrupted", e);
                     interrupt();
                 } catch (Exception e) {
-                    log.debug(e.getLocalizedMessage());
+                    log.error(e.getLocalizedMessage(), e);
                 }
             }
             log.debug("Handler thread has being closed");
