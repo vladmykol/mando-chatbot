@@ -1,7 +1,5 @@
 # Mando - create free chatbot
 
-[![Build status](https://travis-ci.com/vladmykol/mando-chatbot.svg?branch=master)](https://travis-ci.com/vladmykol/mando-chatbot)
-
 It's a free chatbot builder platform powered by SpringBoot and ApacheOpenNLP libs. <a href="https://medium.vladmykol.com/my-nlp-chatbot-from-idea-to-500-users-3fadce3335b9">Read more...</a> 
 
 ![Bot Preview](./src/main/resources/static/bot-promo.jpg)
@@ -16,7 +14,7 @@ Just try yourself here -> <a href="https://t.me/create_free_chatbot">Open Telegr
 
 Please be sure that the following components are installed on your computer before running locally:
 
-- JDK 11
+- JDK 17
 - Gradlew
 - MongoDb
 
@@ -64,7 +62,7 @@ dokku mongo:link bot-db bot
 4. Create
    personal [access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token)
    in GitHub account
-4. Add that toke to dokku  
+4. Add that token to dokku  
    `dokku git:auth github.com ?username? ?personal-access-token?`
 
 ### Deploy steps
